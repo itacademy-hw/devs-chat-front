@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
+import api from '../config/api';
 
 let RegBackground = styled.div`
     margin: 0;
@@ -84,31 +85,59 @@ let RegisterForm = styled.div`
 
 
 class Register extends Component {
+
+    state = {
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        phone: ''
+    };
+
+    bind = (field, e) => {
+        this.setState({
+            [field]: e.target.value
+        });
+    };
+
+    register = async (e) => {
+        e.preventDefault();
+        let response = await api.post('user/register', {
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            email: this.state.email,
+            password: this.state.password
+        });
+
+        let data = await response.json();
+
+        console.log(data);
+    };
     
     render() {
         return (
             <RegBackground>
                 <RegisterForm>
                     <h2>Register</h2>
-                    <form>
+                    <form onSubmit={(e) => {this.register(e)}}>
                         <div className="input-group">
-                            <input type="text" required/>
+                            <input type="text" onChange={(e) => {this.bind('first_name', e)}} value={this.state.first_name} required/>
                             <span>First Name</span>
                         </div>
                         <div className="input-group">
-                            <input type="password" required/>
+                            <input type="password"  onChange={(e) => {this.bind('last_name', e)}} value={this.state.last_name} required/>
                             <span>Last Name</span>
                         </div>
                         <div className="input-group">
-                            <input type="text" required/>
+                            <input type="email"  onChange={(e) => {this.bind('email', e)}} value={this.state.email} required/>
                             <span>E-mail</span>
                         </div>
                         <div className="input-group">
-                            <input type="password" required/>
+                            <input type="password"  onChange={(e) => {this.bind('password', e)}} value={this.state.password} required/>
                             <span>Password</span>
                         </div>
                         <div className="input-group">
-                            <input type="text" required/>
+                            <input type="text"  onChange={(e) => {this.bind('phone', e)}} value={this.state.phone} required/>
                             <span>Phone Number</span>
                         </div>
                         <div className="input-group">
