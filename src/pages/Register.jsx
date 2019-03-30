@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 
-let Background = styled.div`
+let RegBackground = styled.div`
     margin: 0;
     padding: 0;
     width: 100%;
@@ -11,10 +11,10 @@ let Background = styled.div`
     flex-direction: column;
     align-items: center;
     background: url('./img/back.jpg');
-    background-size: 100%;
+    background-size: cover;
     box-sizing: border-box;
 `
-let LoginForm = styled.div`
+let RegisterForm = styled.div`
     text-align: center;
     width: 350px;
     box-sizing: border-box;
@@ -32,7 +32,7 @@ let LoginForm = styled.div`
         width: 100%;
         margin-bottom: 25px;
         input {
-            height: 50px;
+            height: 40px;
             width: 100%;
             padding: 0 20px;
             box-sizing: border-box;
@@ -83,14 +83,22 @@ let LoginForm = styled.div`
 `
 
 
-class Login extends Component {
+class Register extends Component {
     
     render() {
         return (
-            <Background>
-                <LoginForm>
-                    <h2>Sign In</h2>
+            <RegBackground>
+                <RegisterForm>
+                    <h2>Register</h2>
                     <form>
+                        <div className="input-group">
+                            <input type="text" required/>
+                            <span>First Name</span>
+                        </div>
+                        <div className="input-group">
+                            <input type="password" required/>
+                            <span>Last Name</span>
+                        </div>
                         <div className="input-group">
                             <input type="text" required/>
                             <span>E-mail</span>
@@ -100,14 +108,17 @@ class Login extends Component {
                             <span>Password</span>
                         </div>
                         <div className="input-group">
-                            <input className="submit" type="submit" value="Login"/>
+                            <input type="text" required/>
+                            <span>Phone Number</span>
+                        </div>
+                        <div className="input-group">
+                            <input className="submit" type="submit" value="Register"/>
                         </div>
                     </form>
-                    <span className="forgottenPassword">Forgot Passord? <a href="#">Click Here</a></span>
-                </LoginForm>
-            </Background>
+                </RegisterForm>
+            </RegBackground>
         );
     }
 }
 
-export default Login;
+export default Register;
