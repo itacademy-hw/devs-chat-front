@@ -108,10 +108,6 @@ class Register extends Component {
             email: this.state.email,
             password: this.state.password
         });
-
-        let data = await response.json();
-
-        console.log(data);
     };
     
     render() {
@@ -125,7 +121,7 @@ class Register extends Component {
                             <span>First Name</span>
                         </div>
                         <div className="input-group">
-                            <input type="password"  onChange={(e) => {this.bind('last_name', e)}} value={this.state.last_name} required/>
+                            <input type="text"  onChange={(e) => {this.bind('last_name', e)}} value={this.state.last_name} required/>
                             <span>Last Name</span>
                         </div>
                         <div className="input-group">

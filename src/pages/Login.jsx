@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
+import api from "../config/api";
 
 let Background = styled.div`
     margin: 0;
@@ -84,19 +85,36 @@ let LoginForm = styled.div`
 
 
 class Login extends Component {
+    state = {
+        email: '',
+        password: ''
+    }
     
+    bind = (field, e) => {
+        this.setState({
+            [field]: e.target.value
+        })
+    };
+    login = async (e) => {
+        e.preventDefault();
+        let responce = await api.post('user/login', {
+            email: this.state.email,
+            password: this.state.password
+        });
+    }
+
     render() {
         return (
             <Background>
                 <LoginForm>
                     <h2>Sign In</h2>
-                    <form>
+                    <form onSubmit={(e) => this.login(e)}>
                         <div className="input-group">
-                            <input type="text" required/>
+                            <input type="email" onChange={(e) => {this.bind('email', e)}} value={this.state.email} required/>
                             <span>E-mail</span>
                         </div>
                         <div className="input-group">
-                            <input type="password" required/>
+                            <input type="password" onChange={(e) => {this.bind('password', e)}} value={this.state.password} required/>
                             <span>Password</span>
                         </div>
                         <div className="input-group">
