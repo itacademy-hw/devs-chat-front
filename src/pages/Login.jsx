@@ -21,6 +21,10 @@ let LoginForm = styled.div`
     box-sizing: border-box;
     padding: 40px;
     background: rgba(0,0,0,.5);
+    ${props => !!props.err && `
+                border: 1px solid red;
+                `
+            }
     h2 {
         margin: 0 0 20px;
         padding: 0;
@@ -48,6 +52,7 @@ let LoginForm = styled.div`
                 border: 1px solid #000;
                 background: #ff0;
             }
+            
         }
         span {
             position: absolute;
@@ -87,7 +92,8 @@ let LoginForm = styled.div`
 class Login extends Component {
     state = {
         email: '',
-        password: ''
+        password: '',
+        err: false
     }
     
     bind = (field, e) => {
@@ -97,16 +103,27 @@ class Login extends Component {
     };
     login = async (e) => {
         e.preventDefault();
-        let responce = await api.post('user/login', {
-            email: this.state.email,
-            password: this.state.password
-        });
+        try {
+            let response = await api.post('user/login', {
+                email: this.state.email,
+                password: this.state.password
+            });
+            
+            if(response.status === 400) {
+                  
+                this.setState({
+                        err: true
+                })
+            }
+        } catch(e) {
+            console.log(e.statusCode);  
+        }
     }
 
     render() {
         return (
             <Background>
-                <LoginForm>
+                <LoginForm err={this.state.err}>
                     <h2>Sign In</h2>
                     <form onSubmit={(e) => this.login(e)}>
                         <div className="input-group">
