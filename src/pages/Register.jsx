@@ -16,11 +16,15 @@ let RegBackground = styled.div`
     box-sizing: border-box;
 `
 let RegisterForm = styled.div`
-    text-align: center;
-    width: 350px;
-    box-sizing: border-box;
-    padding: 40px;
-    background: rgba(0,0,0,.5);
+text-align: center;
+width: 350px;
+box-sizing: border-box;
+padding: 40px;
+background: rgba(0,0,0,.5);
+ ${props => !!props.err && `
+            border: 1px solid red;
+            ` 
+        }
     h2 {
         margin: 0 0 20px;
         padding: 0;
@@ -82,16 +86,16 @@ let RegisterForm = styled.div`
             }
         }
 `
-
-
 class Register extends Component {
+
 
     state = {
         first_name: '',
         last_name: '',
         email: '',
         password: '',
-        phone: ''
+        phone: '',
+        err: false
     };
 
     bind = (field, e) => {
@@ -108,12 +112,19 @@ class Register extends Component {
             email: this.state.email,
             password: this.state.password
         });
+<<<<<<< HEAD
     };
+=======
+
+        let data = await response.json();
+
+};
+>>>>>>> User registration
     
     render() {
         return (
             <RegBackground>
-                <RegisterForm>
+                <RegisterForm err={this.state.err}>
                     <h2>Register</h2>
                     <form onSubmit={(e) => {this.register(e)}}>
                         <div className="input-group">
