@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import api from '../config/api';
 
 let RegBackground = styled.div`
@@ -88,16 +90,36 @@ background: rgba(0,0,0,.5);
 `
 class Register extends Component {
 
-
     state = {
         first_name: '',
         last_name: '',
         email: '',
         password: '',
         phone: '',
-        err: false
+        err: false,
+        errMessage: ''
     };
 
+    constructor(props) {
+        super(props);
+        //this.addNotification = this.addNotification.bind(this);
+        this.notificationDOMRef = React.createRef();
+    }
+
+    addNotification = () => {
+        this.notificationDOMRef.current.addNotification({
+            title: " Error ",
+            message: this.state.errMessage,
+            type: "danger",
+            insert: "top",
+            container: "top-center",
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: { duration: 2000 },
+            dismissable: { state: true }
+        });
+    }
+   
     bind = (field, e) => {
         this.setState({
             [field]: e.target.value
@@ -106,24 +128,34 @@ class Register extends Component {
 
     register = async (e) => {
         e.preventDefault();
-        let response = await api.post('user/register', {
-            first_name: this.state.first_name,
-            last_name: this.state.last_name,
-            email: this.state.email,
-            password: this.state.password
-        });
-<<<<<<< HEAD
+        try {
+            let response = await api.post('user/register', {
+                first_name: this.state.first_name,
+                last_name: this.state.last_name,
+                email: this.state.email,
+                password: this.state.password
+            });
+            this.setState({
+                err: false
+            });
+
+        } catch(e) {
+            console.log(e.response);
+            if(e.response.status === 400) {
+                console.log(this);
+                this.setState({
+                    err: true,
+                    errMessage: e.response.data.message
+                });
+                this.addNotification();
+            }
+        }
     };
-=======
-
-        let data = await response.json();
-
-};
->>>>>>> User registration
     
     render() {
         return (
             <RegBackground>
+                <ReactNotification ref={this.notificationDOMRef} />
                 <RegisterForm err={this.state.err}>
                     <h2>Register</h2>
                     <form onSubmit={(e) => {this.register(e)}}>
@@ -156,5 +188,4 @@ class Register extends Component {
         );
     }
 }
-
 export default Register;
