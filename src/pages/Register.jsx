@@ -112,7 +112,7 @@ class Register extends Component {
             message: this.state.errMessage,
             type: "danger",
             insert: "top",
-            container: "top-center",
+            container: "top-right",
             animationIn: ["animated", "fadeIn"],
             animationOut: ["animated", "fadeOut"],
             dismiss: { duration: 2000 },
