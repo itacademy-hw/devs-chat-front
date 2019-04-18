@@ -14,7 +14,7 @@ let Background = styled.div`
     background: url('./img/back.jpg');
     background-size: 100%;
     box-sizing: border-box;
-`
+`;
 let LoginForm = styled.div`
     text-align: center;
     width: 350px;
@@ -85,7 +85,7 @@ let LoginForm = styled.div`
                 color: #fff;
             }
         }
-`
+`;
 
 
 class Login extends Component {
@@ -93,7 +93,7 @@ class Login extends Component {
         email: '',
         password: '',
         err: false
-    }
+    };
     
     bind = (field, e) => {
         this.setState({
@@ -107,17 +107,15 @@ class Login extends Component {
                 email: this.state.email,
                 password: this.state.password
             });
-            if(response.status === 400) {
-                this.setState({
-                        err: true
-                })
-            }
-        } catch(e) {
             this.setState({
                 err: false
-            })  
+            });
+        } catch(e) {
+            this.setState({
+                err: true
+            });
         }
-    }
+    };
 
     render() {
         return (
