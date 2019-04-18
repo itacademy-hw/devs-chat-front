@@ -21,10 +21,6 @@ let LoginForm = styled.div`
     box-sizing: border-box;
     padding: 40px;
     background: rgba(0,0,0,.5);
-    ${props => !!props.err && `
-                border: 1px solid red;
-                `
-            }
     h2 {
         margin: 0 0 20px;
         padding: 0;
@@ -52,7 +48,10 @@ let LoginForm = styled.div`
                 border: 1px solid #000;
                 background: #ff0;
             }
-            
+            ${props => !!props.err && `
+                border: 1px solid red;
+                `
+            }
         }
         span {
             position: absolute;
@@ -108,15 +107,15 @@ class Login extends Component {
                 email: this.state.email,
                 password: this.state.password
             });
-            
             if(response.status === 400) {
-                  
                 this.setState({
                         err: true
                 })
             }
         } catch(e) {
-            console.log(e.statusCode);  
+            this.setState({
+                err: false
+            })  
         }
     }
 
