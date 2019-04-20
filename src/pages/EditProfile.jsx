@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
+import api from "../config/api";
 
 let Background = styled.div`
     margin: 0;
@@ -96,13 +97,11 @@ let EditForm = styled.div`
 
 class EditProfile extends Component {
     state = {
-        data: false
+        first_name: ''
     }
     componentWillMount() {
-        fetch('http://localhost:3000/user/me').then(response => response.json())
-        .then(json => {
-            this.setState({data: json})
-        });
+        api.get('http://localhost:3000/user/me').then(response => response.json())
+        .then(json => this.setState({json}));
     }
     
     render() {
@@ -117,7 +116,7 @@ class EditProfile extends Component {
                     <form>
                         <div className="input-group">
                             <input type="email" onChange={(e) => {this.bind('email', e)}} value={this.state.email} required/>
-                            <span>E-mail</span>
+                            <span>{this.state.first_name}</span>
                         </div>
                         <div className="input-group">
                             <input type="password" onChange={(e) => {this.bind('password', e)}} value={this.state.password} required/>
