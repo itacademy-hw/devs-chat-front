@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import api from '../config/api';
+import ls from 'local-storage';
 
 let RegBackground = styled.div`
     margin: 0;
@@ -134,6 +135,7 @@ class Register extends Component {
                 email: this.state.email,
                 password: this.state.password
             });
+            ls.set('accessToken', response.data.token);
             this.setState({
                 err: false
             });

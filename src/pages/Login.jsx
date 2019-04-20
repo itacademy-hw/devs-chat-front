@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 import api from "../config/api";
+import ls from "local-storage";
 
 let Background = styled.div`
     margin: 0;
@@ -107,6 +108,7 @@ class Login extends Component {
                 email: this.state.email,
                 password: this.state.password
             });
+            ls.set('accessToken', response.data.token);
             this.setState({
                 err: false
             });
