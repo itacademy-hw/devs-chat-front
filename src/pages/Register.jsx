@@ -18,13 +18,13 @@ let RegBackground = styled.div`
     box-sizing: border-box;
 `
 let RegisterForm = styled.div`
-text-align: center;
-width: 350px;
-box-sizing: border-box;
-padding: 40px;
-background: rgba(0,0,0,.5);
+    text-align: center;
+    width: 350px;
+    box-sizing: border-box;
+    padding: 40px;
+    background: rgba(0,0,0,.5);
  ${props => !!props.err && `
-            border: 1px solid red;
+    border: 1px solid red;
             ` 
         }
     h2 {
@@ -102,7 +102,6 @@ class Register extends Component {
 
     constructor(props) {
         super(props);
-        //this.addNotification = this.addNotification.bind(this);
         this.notificationDOMRef = React.createRef();
     }
 
@@ -116,7 +115,7 @@ class Register extends Component {
             animationIn: ["animated", "fadeIn"],
             animationOut: ["animated", "fadeOut"],
             dismiss: { duration: 2000 },
-            dismissable: { state: true }
+            dismissable: { click: true }
         });
     }
    
@@ -140,9 +139,7 @@ class Register extends Component {
             });
 
         } catch(e) {
-            console.log(e.response);
             if(e.response.status === 400) {
-                console.log(this);
                 this.setState({
                     err: true,
                     errMessage: e.response.data.message
