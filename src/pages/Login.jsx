@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
+import api from "../config/api";
 
 let Background = styled.div`
     margin: 0;
@@ -13,7 +14,7 @@ let Background = styled.div`
     background: url('./img/back.jpg');
     background-size: 100%;
     box-sizing: border-box;
-`
+`;
 let LoginForm = styled.div`
     text-align: center;
     width: 350px;
@@ -46,6 +47,10 @@ let LoginForm = styled.div`
                 padding: 2px 4px;
                 border: 1px solid #000;
                 background: #ff0;
+            }
+            ${props => !!props.err && `
+                border: 1px solid red;
+                `
             }
         }
         span {
@@ -80,23 +85,50 @@ let LoginForm = styled.div`
                 color: #fff;
             }
         }
-`
+`;
 
 
 class Login extends Component {
+    state = {
+        email: '',
+        password: '',
+        err: false
+    };
     
+    bind = (field, e) => {
+        this.setState({
+            [field]: e.target.value
+        })
+    };
+    login = async (e) => {
+        e.preventDefault();
+        try {
+            let response = await api.post('user/login', {
+                email: this.state.email,
+                password: this.state.password
+            });
+            this.setState({
+                err: false
+            });
+        } catch(e) {
+            this.setState({
+                err: true
+            });
+        }
+    };
+
     render() {
         return (
             <Background>
-                <LoginForm>
+                <LoginForm err={this.state.err}>
                     <h2>Sign In</h2>
-                    <form>
+                    <form onSubmit={(e) => this.login(e)}>
                         <div className="input-group">
-                            <input type="text" required/>
+                            <input type="email" onChange={(e) => {this.bind('email', e)}} value={this.state.email} required/>
                             <span>E-mail</span>
                         </div>
                         <div className="input-group">
-                            <input type="password" required/>
+                            <input type="password" onChange={(e) => {this.bind('password', e)}} value={this.state.password} required/>
                             <span>Password</span>
                         </div>
                         <div className="input-group">
