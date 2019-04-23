@@ -97,13 +97,17 @@ let EditForm = styled.div`
 
 class EditProfile extends Component {
     state = {
-        data: false
+        first_name: '',
+        sendData: {
+            first_name: '',
+        }
     }
     componentWillMount() {
-        api.get('user/me').then(response => response.json())
-        .then(json => this.setState({
-            data: json
-        }))
+        api.get('user/me')
+        .then(response => {
+            console.log(response);
+            this.setState(response.data.me);
+        });
     }
     render() {
         return (
@@ -116,13 +120,16 @@ class EditProfile extends Component {
                     </div>
                     <form>
                         <div className="input-group">
-                            <input type="email" required/>
+                            <input type="text" required onChange={(e) => this.setState({sendData: {first_name: e.target.value}})}/>
                             <span>{this.state.first_name}</span>
                         </div>
                         <div className="input-group">
                             <input type="password" required/>
                             <span>Password</span>
                         </div>
+                        <button>
+                        Send
+                        </button> 
                     </form>
                 </EditForm>
             </Background>
