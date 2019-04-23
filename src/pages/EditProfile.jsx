@@ -97,13 +97,14 @@ let EditForm = styled.div`
 
 class EditProfile extends Component {
     state = {
-        first_name: ''
+        data: false
     }
     componentWillMount() {
-        api.get('http://localhost:3000/user/me').then(response => response.json())
-        .then(json => this.setState({json}));
+        api.get('user/me').then(response => response.json())
+        .then(json => this.setState({
+            data: json
+        }))
     }
-    
     render() {
         return (
             <Background>
@@ -115,15 +116,14 @@ class EditProfile extends Component {
                     </div>
                     <form>
                         <div className="input-group">
-                            <input type="email" onChange={(e) => {this.bind('email', e)}} value={this.state.email} required/>
+                            <input type="email" required/>
                             <span>{this.state.first_name}</span>
                         </div>
                         <div className="input-group">
-                            <input type="password" onChange={(e) => {this.bind('password', e)}} value={this.state.password} required/>
+                            <input type="password" required/>
                             <span>Password</span>
                         </div>
                     </form>
-
                 </EditForm>
             </Background>
         );
