@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-
+import Profile from "../profile/Profile";
 let MemCont = styled.div`
     display: grid;
     background: #e9ecf1;
@@ -31,12 +31,49 @@ let LeftLine = styled.div`
         }
 `;
 class Member extends Component {
+    constructor() {
+        super();
     
+        this.handleClick = this.handleClick.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    
+        this.state = {
+          popupVisible: false
+        };
+      }
+    
+      handleClick() {
+        if (!this.state.popupVisible) {
+          // attach/remove event handler
+          document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+          document.removeEventListener('click', this.handleOutsideClick, false);
+        }
+    
+        this.setState(prevState => ({
+           popupVisible: !prevState.popupVisible,
+        }));
+      }
+      
+      handleOutsideClick(e) {
+        // ignore clicks on the component itself
+        if (this.node.contains(e.target)) {
+          return;
+        }
+        
+        this.handleClick();
+      }
     render() {
         return (
             <>
             <MemCont>
-                <NameInfo>
+                <NameInfo 
+                 ref={node => { this.node = node; }}
+                 onClick={this.handleClick}>
+                     {
+                      this.state.popupVisible && 
+                    (<Profile/>
+        )}
                   <p className="name">Adinay A</p>
                 </NameInfo>
                 <LeftLine>
