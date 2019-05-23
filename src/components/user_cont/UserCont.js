@@ -5,6 +5,7 @@ import Setting from "../settingCont/Setting";
 let Cont = styled.div`
     display: grid;
     grid-template-columns: 22% 63% 15%;
+    cursor: pointer;
 `;
 
 let PhotoCont = styled.div`
@@ -69,13 +70,13 @@ class UserCont extends Component {
         let {imgBg, name, message, time, id, selectedChat, onSelect} = this.props;
         return (
             <>
-            <Cont>
+            <Cont onClick={(e) => window.location.href = `/chat/${id}`}>
                <LineDiv>
                  <PhotoCont img={imgBg}/>
                </LineDiv>
                <PerData>
                 <NameCont>
-                  <p className="name">{name}</p> 
+                  <p className="name">{name}</p>
                 </NameCont>
                 <MessageCont>
                   <p>{message}</p>

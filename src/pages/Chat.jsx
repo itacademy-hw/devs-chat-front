@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Search from "../components/search";
 import Member from "../components/current-member/Member";
 import Left from "../components/columns/Left";
+import Right from "../components/columns/Right";
 
 let MainDiv = styled.div`
   width: 100%;
@@ -13,15 +14,21 @@ let MainDiv = styled.div`
 `;
 
 class Chat extends Component {
+    componentDidMount() {
+        console.log(this.props);
+    }
     
     render() {
+        let id = this.props.match.params.id;
         return (
             <MainDiv>
                 <Search/>
-                 <Member/>
-                <Left/> 
-                {/*<Profile/> 
-                <Right/> */}
+                <Member/>
+                <Left/>
+                {
+                    id && <Right chat_id={id}/>
+                }
+
             </MainDiv>
         );
     }

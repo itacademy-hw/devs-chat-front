@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import UserCont from "../user_cont/UserCont";
 import api from "../../config/api";
+let moment = require('moment');
 
 let LeftCont = styled.div`
     border-top: 1px solid #fffefe47;
@@ -22,8 +23,7 @@ class Left extends Component {
         let response = await api.get('/chat');
         this.setState({
             chats: response.data
-        })
-        console.log(this.state.chats);
+        });
     }
 
     render() {
@@ -35,8 +35,8 @@ class Left extends Component {
                         <UserCont 
                             imgBg="http://sahro.net/uploads/posts/2014-05/1400003901_shahzoda-matchonova-men-aktrisa-bolmoqchiman-qogirchoq-emas.jpg"
                             name={`${chat.companion.first_name} ${chat.companion.last_name}`}
-                            message="Hello World"
-                            time="10 min"
+                            message={chat.last_message.text}
+                            time={moment.duration(moment(chat.last_message.createdAt).diff(moment(), 'minutes'), "minutes").humanize(true)}
                             id={chat.id}
                             selectedChat={this.state.selectedChat}
                             onSelect={(id) => this.setState({selectedChat: id})}

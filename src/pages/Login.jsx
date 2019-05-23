@@ -95,6 +95,12 @@ class Login extends Component {
         password: '',
         err: false
     };
+
+    componentWillMount(){
+        if(ls.get('accessToken')){
+            window.location.href = '/chat';
+        }
+    }
     
     bind = (field, e) => {
         this.setState({

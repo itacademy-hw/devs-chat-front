@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import FirstMember from "../first-member/FirstMember";
 import SekondMember from "../second-member/SekondMember";
+import api from "../../config/api";
+import ls from "local-storage";
+let moment = require('moment');
+let jwt_decode = require('jwt-decode');
 
 let RightCont = styled.div`
     border-top: 1px solid #61585847;
@@ -12,7 +16,8 @@ let RightCont = styled.div`
 `;
 
 let MessageArchive = styled.div`
-    height: 10%;
+    overflow-x: hidden;
+    overflow-y: scroll;
     display: grid;
 `;
 
@@ -53,41 +58,68 @@ let MessageInp = styled.div`
 
 class Right extends Component {
 
+    state = {
+        messages: [],
+        message: '',
+        userId: jwt_decode(ls.get('accessToken')).userId
+
+    }
+
+    async componentWillMount() {
+        await this.refetch();
+        console.log(this.state.userId);
+    }
+
+    async refetch() {
+        let response = await api.get(`/message/${this.props.chat_id}`);
+        this.setState({
+            messages: response.data
+        });
+    }
+
+    async sendMessage(){
+        let response = await api.post(`message/${this.props.chat_id}`, {
+            text: this.state.message,
+        });
+        this.setState({
+            message: ''
+        });
+        await this.refetch();
+    }
+
     render() {
         return (
             <>
             <RightCont>
               <MessageArchive>
-                  <FirstMember 
-                    visiTime="12:03"
-                    letText="
-                        Lorem ipsum dolor sit amet,
-                         consectetur adipiscing elit,
-                          sed do eiusmod tempor incididunt
-                           ut labore et dolore."
-                    />
-                    <FirstMember 
-                    visiTime="12:11"
-                    letText="
-                        Lorem ipsum dolor sit amet,
-                         consectetur adipiscing elit,
-                          sed do eiusmod tempor incididunt
-                           ut labore et dolore."
-                    />   
-                    <SekondMember
-                        visiTime="12:13"
-                        letText="
-                            Lorem ipsum dolor sit amet,
-                             consectetur adipiscing elit."
-                    />
+                  {
+                      this.state.messages.map((message) => (
+                          <>
+                              {
+                                  message.user_id === this.state.userId && <SekondMember
+                                      visiTime={moment(message.createdAt).format('HH:mm')}
+                                      letText={message.text}
+                                  />
+                              }
+                              {
+                                  message.reciever_id === this.state.userId && <FirstMember
+                                      visiTime={moment(message.createdAt).format('HH:mm')}
+                                      letText={message.text}
+                                  />
+                              }
+                          </>
+                      ))
+                  }
               </MessageArchive>
               <MessageInp>
                   <div className="clip">
                     <div className="clipLogo"/>
                   </div>
-                  <input type="text"></input>
+                  <input
+                      type="text" value={this.state.message}
+                      onChange={(e) => this.setState({message: e.target.value})} />
                     <div className="emojiSend">
-                        <div className="send"/>
+                        <div className="send" onClick={(e) => this.sendMessage()}/>
                     </div>
               </MessageInp>
             </RightCont>
