@@ -10,31 +10,38 @@ let jwt_decode = require('jwt-decode');
 let RightCont = styled.div`
     border-top: 1px solid #61585847;
     display: grid;
-    grid-template-rows: 82% 18%;
     background: #e9ecf1;
-    height: 568px;
+    height: calc(100vh - 61px);
 `;
 
 let MessageArchive = styled.div`
     overflow-x: hidden;
     overflow-y: scroll;
     display: grid;
+    height: calc(100vh - 114px);
 `;
 
 let MessageInp = styled.div`
     background: #fbfdfc;
     display: grid;
     grid-template-columns: 10% 80% 10%;
+    max-height: 50px;
 
         div.clip{
-            display: grid;
-            padding: 25px;
-
-            div.clipLogo{
-                width: 50px;
-                height: 50px;
-                background: url(https://www.shareicon.net/download/2015/09/12/99863_file_512x512.png)no-repeat;
-                background-size: cover;
+            display: flex;
+            padding: 5px;
+            align-items: center;
+            justify-content: center;
+            
+            .fa-paperclip{
+                font-size: 30px;
+                transform: rotate(-45deg);
+                color: #808080;
+                transition: all .3s;
+                cursor: pointer;
+                :hover {
+                    color: #262d35;
+                }
             }
         }
 
@@ -43,16 +50,24 @@ let MessageInp = styled.div`
             outline: none;
         }
 
-        div.emojiSend{
-            display: grid;
-            padding: 28px;
-
-                div.send{
-                    width: 40px;
-                    height: 40px;
-                    background: url(https://banner2.kisspng.com/20180715/afz/kisspng-computer-icons-telegram-logo-5b4bb35b8b3a97.7981817315316877715703.jpg)no-repeat;
-                    background-size: cover;
+        div.sendButton{
+            display: flex;
+            padding: 5px;
+            align-items: center;
+            justify-content: center;
+            
+            button{
+                background: transparent;
+                font-size: 30px;
+                color: #808080;
+                border: none;
+                cursor: pointer;
+                transition: all .3s;
+        
+                :hover {
+                    color: #262d35;
                 }
+            }
         }
 `;
 
@@ -66,8 +81,10 @@ class Right extends Component {
     }
 
     async componentWillMount() {
-        await this.refetch();
-        console.log(this.state.userId);
+        setInterval(async () => {
+            await this.refetch();
+        }, 2000);
+
     }
 
     async refetch() {
@@ -75,6 +92,7 @@ class Right extends Component {
         this.setState({
             messages: response.data
         });
+        this.scrollToBottom();
     }
 
     async sendMessage(){
@@ -87,39 +105,47 @@ class Right extends Component {
         await this.refetch();
     }
 
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    }
+
     render() {
         return (
             <>
             <RightCont>
               <MessageArchive>
                   {
-                      this.state.messages.map((message) => (
+                      this.state.messages.map((message, key) => (
                           <>
                               {
                                   message.user_id === this.state.userId && <SekondMember
                                       visiTime={moment(message.createdAt).format('HH:mm')}
                                       letText={message.text}
+                                      key={key}
                                   />
                               }
                               {
                                   message.reciever_id === this.state.userId && <FirstMember
                                       visiTime={moment(message.createdAt).format('HH:mm')}
                                       letText={message.text}
+                                      key={key}
                                   />
                               }
                           </>
                       ))
                   }
+                  <div ref={(el) => { this.messagesEnd = el; }} />
               </MessageArchive>
               <MessageInp>
                   <div className="clip">
-                    <div className="clipLogo"/>
+                      <i className="fas fa-paperclip"/>
                   </div>
                   <input
+                      placeholder="Type something..."
                       type="text" value={this.state.message}
                       onChange={(e) => this.setState({message: e.target.value})} />
-                    <div className="emojiSend">
-                        <div className="send" onClick={(e) => this.sendMessage()}/>
+                    <div className="sendButton">
+                        <button onClick={(e) => this.sendMessage()}><i className="fab fa-telegram"></i></button>
                     </div>
               </MessageInp>
             </RightCont>

@@ -8,16 +8,16 @@ import ls from "local-storage";
 
 
 export default class App extends Component {
-
+    componentDidMount() {
+        console.log(this.props);
+    }
     render() {
         return (
-            <div id="root">
-                <Router>
-                    <Route path="/login" component={Login}/>
-                    <Route path="/register" component={Register}/>
-                    <Route path="/chat/:id" component={Chat}/>
-                </Router>
-            </div>
+            <Router>
+                <Route path="/login" component={Login}/>
+                <Route path="/register" component={Register}/>
+                <Route path="/chat/:id?" component={Chat}/>
+            </Router>
         );
     }
 }

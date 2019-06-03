@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import api from "../../config/api";
 
 let SearchCont = styled.div`
-    padding: 10px 0px 10px 60px;
-    display: grid;
+    padding: 10px 10px 10px 10px;
     background: #262d35;
 `;
 let InputCont = styled.div`
@@ -37,13 +37,30 @@ let InputCont = styled.div`
 `;
 class Search extends Component {
 
+    state = {
+        typingTimeout: ''
+    };
+
+    doSearch(e) {
+        e.persist();
+        if(this.state.typingTimeout) {
+            clearTimeout(this.state.typingTimeout);
+        }
+
+        this.setState({
+            typingTimeout: setTimeout(() => {
+                this.props.onSearch(e.target.value);
+            },3000)
+        });
+    }
+
     render() {
         return (
             <>
             <SearchCont>
                 <InputCont>
                     <div/>
-                    <input type="text"/>
+                    <input type="text" placeholder="Search for friends..." onChange={(e) => this.doSearch(e)}/>
                 </InputCont>
             </SearchCont>
             </>

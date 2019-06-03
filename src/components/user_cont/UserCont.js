@@ -1,10 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import styled from "styled-components";
 import Setting from "../settingCont/Setting";
+import {Link} from 'react-router-dom';
 
 let Cont = styled.div`
-    display: grid;
-    grid-template-columns: 22% 63% 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 15px;
     cursor: pointer;
 `;
 
@@ -14,44 +17,28 @@ let PhotoCont = styled.div`
    border-radius: 35px;
    background: url('${(props => props.img)}');
    background-size: cover;
-   display: grid; 
 `;
 
 let LineDiv = styled.div`
     width: 60px;
     border-bottom: 1px solid #fffefe47;
-    display: grid;
-    margin: 0px 10px;
-    padding-top: 10px;
-`;
-
-let PerData = styled.div`
-    display: grid; 
-    grid-template-rows: 50% 50% ;
+    display: flex;
+    align-items: center;
+    margin: 0 30px 0 0;
 `;
 
 let NameCont = styled.div`
-    height: 35px;
-    display: grid;
     color: white;
     font-family: strong;
-    font-size: 19px;
+    font-size: 16px;
     align-content: baseline;
 `;
 
 let MessageCont = styled.div`
-    height: 35px;
-    display: grid;
     align-items: center;
     align-content: end;
     color:#97a0af;
     font-size: 15px;
-    padding-top: 4px;
-`;
-
-let TimeSetCont = styled.div`
-    display: grid; 
-    grid-template-rows: 50% 50% ;
 `;
 
 let TimeCont = styled.div`
@@ -64,31 +51,41 @@ let TimeCont = styled.div`
     padding-top: 4px;
 `;
 
+let Settings = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+`;
+
 class UserCont extends Component {
 
     render() {
-        let {imgBg, name, message, time, id, selectedChat, onSelect} = this.props;
+        let {imgBg, name, message, time, id} = this.props;
         return (
             <>
-            <Cont onClick={(e) => window.location.href = `/chat/${id}`}>
-               <LineDiv>
-                 <PhotoCont img={imgBg}/>
-               </LineDiv>
-               <PerData>
-                <NameCont>
-                  <p className="name">{name}</p>
-                </NameCont>
-                <MessageCont>
-                  <p>{message}</p>
-                </MessageCont>
-             </PerData>
-             <TimeSetCont>
-               <Setting/>
-                <TimeCont>
-                  <p>{time}</p>
-                </TimeCont>
-             </TimeSetCont>
-            </Cont>
+                <Link to={`/chat/${id}`}>
+                    <Cont>
+                        <LineDiv>
+                            <PhotoCont img={imgBg}/>
+                        </LineDiv>
+                        <div style={{marginRight: 'auto'}}>
+                            <NameCont>
+                                <p className="name">{name}</p>
+                            </NameCont>
+                            <MessageCont>
+                                <p>{message}</p>
+                            </MessageCont>
+                        </div>
+                        <Settings>
+                            <Setting/>
+                            <TimeCont>
+                                <p>{time}</p>
+                            </TimeCont>
+                        </Settings>
+                    </Cont>
+                </Link>
+
             </>
         );
     }
