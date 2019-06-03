@@ -17,7 +17,7 @@ let RegBackground = styled.div`
     background: url('./img/back.jpg');
     background-size: cover;
     box-sizing: border-box;
-`
+`;
 let RegisterForm = styled.div`
     text-align: center;
     width: 350px;
@@ -88,7 +88,7 @@ let RegisterForm = styled.div`
                 color: #fff;
             }
         }
-`
+`;
 class Register extends Component {
 
     state = {
@@ -106,6 +106,12 @@ class Register extends Component {
         this.notificationDOMRef = React.createRef();
     }
 
+    componentWillMount(){
+        if(ls.get('accessToken')){
+            window.location.href = '/chat';
+        }
+    }
+
     addNotification = () => {
         this.notificationDOMRef.current.addNotification({
             title: " Error ",
@@ -118,7 +124,7 @@ class Register extends Component {
             dismiss: { duration: 2000 },
             dismissable: { click: true }
         });
-    }
+    };
    
     bind = (field, e) => {
         this.setState({
